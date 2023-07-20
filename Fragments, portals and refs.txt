@@ -1,0 +1,137 @@
+There are JSX limitations for example as we know that we cannot return more than one root to function/component.We also cannot store more than one root JSX element in a variable.
+
+**Solution 1:
+This problem has been solved by wrapping the whole code into a div container.
+
+But this solution is not so efficient for bigger apps as there will so many unecessary deep div which are unnecessary but will render in the real DOM just because of this limitation. This approach is OK but not ideal
+
+**Solution 2:
+You can make your own custom wrapper just like 
+
+function wrapper(props){
+	return props.children; // HERE props.children returns all the content around which it is wrapped
+}
+
+
+and then in other files you can use it as 
+<wrapper>Your content (HTML, JSX etc.) </wrapper>
+
+
+wrapper is nothing just an empty component. You may thing what the benefit of it. The advantage is that now this wrapper component will not render in the real DOM.
+
+
+------------------------React Fragments
+
+instead of making wrappers you can simply use react fragments like
+
+<React.Fragments>Your content (HTML, JSX etc.) </React.Fragments>
+
+These fragments wont render in the real DOM
+
+----------------Portals
+
+
+Its not good to style a div like a button by adding eventlisteners into it and by adding the CSS styles this may would work but it not a good idea to style a div element as button.
+Portals let you render children in some different part of DOM
+
+EXP1
+import { createPortal } from 'react-dom';
+
+// ...
+
+<div>
+  <p>This child is placed in the parent div.</p>
+  {createPortal(
+    <p>This child is placed in the document body.</p>,
+    document.body
+  )}
+</div>
+
+EXP 2:
+
+function SidebarContent() {
+  return <p>This part is also rendered by React!</p>;
+}
+
+export default function App() {
+  return (
+    <>
+      {createPortal(
+        <SidebarContent />,
+        sidebarContentEl
+      )}
+    </>
+  );
+}
+
+
+----------------Refs (Hook)
+
+
+Refs allow us to access DOM element and work with them. When you want a component to remember some info but not render it. Its basically a hook.
+once you have made a connection between you rendering HTML element and your ref. You can console.log the value of ref you will get an object having current props.
+if you want to get value then you can do something like that:
+
+console.log(yourRefName.current.value) //yourValue
+
+so we can say we can use this hook to read the values and remember it by saving it into some variable
+
+React Hook "useRef" cannot be called at the top level. React Hooks must be called in a React function component
+
+***EXP
+import React, { useRef, useState } from "react";
+import Button from "../../UI/Button/Button";
+import styles from "./CourseInput.module.css";
+
+const CourseInput = (props) => {
+  const [enteredValue, setEnteredValue] = useState("");
+  const [isValid, setIsValid] = useState(true);
+  const myInput = useRef();
+  console.log(myInput.current.value)
+
+  const goalInputChangeHandler = (event) => {
+    if (event.target.value.trim().length > 0) {
+      setIsValid(true);
+    }
+    setEnteredValue(event.target.value);
+  };
+
+  const formSubmitHandler = (event) => {
+    setEnteredValue("");
+    event.preventDefault();
+    if (enteredValue.trim().length === 0) {
+      setIsValid(false);
+      return;
+    }
+    props.onAddGoal(enteredValue);
+  };
+
+  return (
+    <form onSubmit={formSubmitHandler}>
+      <div
+        className={`${styles["form-control"]} ${
+          !isValid ? styles.invalid : ""
+        }`}
+      >
+        <label>Course Goal</label>
+        <input
+          value={enteredValue}
+          type="text"
+          onChange={goalInputChangeHandler}
+          ref={myInput}
+        />
+      </div>
+
+      <Button type="submit">Add Goal</Button>
+    </form>
+  );
+};
+
+export default CourseInput;
+
+
+----------Controlled Vs uncontrolled
+Here above elements using ref are called uncontrolled components as by using ref we are accessing value by interacting with DOM but we are not controlling the state.
+
+
+

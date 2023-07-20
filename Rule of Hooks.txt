@@ -1,0 +1,7 @@
+---------------Rules of Hook
+Only call Hooks in React Component Functions. You cannot call hook functions outside the component function.
+Dont call them in nested function. or in block code.
+
+
+Specifil unofficail rule for useEffect():
+Always add every thing in you dependencies that you have refered in the useEffect callback function 

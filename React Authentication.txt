@@ -1,0 +1,52 @@
+-------Query Parameter
+
+query parameter is a parameter which appends in the URL aftter a question mark.
+
+You can do authentication with the help of useState Hook but there is a web standard in which we do authentication uisng query parameter logic due to which this work easy to redirect to the authentication pages.
+
+------------useSearchParams
+Query params are officially called search params
+This hook actually returns an array
+
+const [searchParams, setSearchParams] = useSearchParams();
+const siLogin = searchParams.get('mode')
+
+ <div className={classes.actions}>
+          <Link to={`?mode=${isLogin ? 'signup' : 'login'}`} >
+            {isLogin ? "Create new user" : "Login"}
+          </Link>
+
+//here mode is a keyword we used after ? we can set it to anyanem
+//searchParams is an object of current query parameter
+//here setSearchParams is a function to update searchParams
+
+
+
+
+----------------Extra Info
+fetch('https://localhost:8080/', {
+    method : 'POST',
+    header: {
+      'Content-Type': 'application/json'
+    },
+    body:JSON.stringify(authData)
+  })
+
+
+These are some essentials must be set for post method
+
+-------------------Standard way of throwing errors
+import {json} from 'react-router-dom'
+if (!response.ok) {
+    return json({message : 'Could not authenticate user'}, {status: 500})
+
+  }
+
+
+------------Important
+
+Important:If doesn't return a value under certain circumstances.
+then You should make sure that you do add an extra return null statement in all if statement branches where nothing would be returned otherwise to avoid errors.
+
+
+----------------useSubmit hook

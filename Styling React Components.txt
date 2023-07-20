@@ -1,0 +1,63 @@
+----------Dynamic Inline Style
+
+Inline styles always have highest priority
+If you are entering style in the component tag then remember that style takes and object so add like this:
+
+<label style={{color: !isValid ? 'red' : 'black'}}>Course Goal</label>
+
+//here isValid is initial state -----> const [isValid, setIsValid] = useState(true);
+
+
+But this will change this CSS permanently you have reset the state
+
+
+-----------------------------Adding classes Dynamically
+
+We can add classes dynamically with the help of template literal
+
+we have added some extra classes in CSS which will style our components as we want
+
+// in CSS file
+
+.form-control.invalid input {
+  border-color: red;
+  background-color: #ffd7d7;
+}
+.form-control.invalid label {
+  color: red;
+}
+
+<div className={`form-control ${!isValid ? 'invalid' : ''}`}>
+
+in ${} we can also perform our JS expressions
+
+
+------------------------------CSS modules
+
+React app support CSS modules and all its transform to normal code to run in browser.
+To use your CSS files as a module you have change its name like anyname.module.css
+
+and instead of simply import it you have import it like:
+
+import styles from './Button.module.css';
+
+<button type={props.type} className={styles.button} onClick={props.onClick}> 
+
+//button is my class having CSS properties in Button.module.css file
+// now here "styles" will act as object and CSS classes will act as propteries for this (style) object.
+
+NOTE: If you CSS property has name with dash then this syntax will not work you have to some different syntax like: 
+<button type={props.type} className={styles['my-button']} onClick={props.onClick}> 
+
+If you are adding classes dynamically on conditions then you can use this syntax of template literal:
+<div className={`${styles['form-control']} ${!isValid ? styles.invalid: ''}`}>
+
+Note that CSS modules and dyncamically adding classes work almost the same.
+
+
+
+
+
+
+
+

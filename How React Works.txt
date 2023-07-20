@@ -1,0 +1,35 @@
+React is a JS library for builing user interfaces. React is all about components, props and state management.
+React really doesnt care whether it contains HTML or not. React dont know what browser is. React only cares about components and their states.
+React hands over all its things to the ReactDOM which is a virtual DOM. It is responsible to communicate with the Real DOM and take all headach of what to show to the user.
+
+If we make any changes in the component. React checks whether it make changes to the screen OR not. If yes, then it tells the reactDOM which then deal with Real DOM and so on. 
+
+React determines how the component tree are currently looking and how they  should look like. Virtual DOM receives the difference (required changes) and then it manipulate the Real DOM accordingly.
+
+
+**It is important to note that whenever the state, context or props changes inside the component. React Re-evaluated/re-execute that component. Moreover, Re-evaluation doesn't mean Re-Rendering  the Real DOM. NO NOT at all.
+Real DOM changes only when there is a difference between the tree of the previous state and current state. This makes React Fast.
+
+---Example
+//previous state
+
+<div>
+<h1> Hello guys </h1>
+</div>
+
+//New state
+
+<div>
+<h1> Hello guys </h1>
+<p>I am new guys</p>
+</div>
+
+
+React will compare both states and it will only insert the <p> tag in the Real DOM instead of Re-rendering the entire DOM. It will not touch the existing elements.
+If you want to see this in action make a code in which on click a button a paragraph should be inserted. Then go to the elements in browser and note that on clicking button only the inserted paragraph will flash and rest of the HTML DOM wont be touched.
+
+
+Also remember when ever a parent component is re-executed its child components will re-executed too.
+So this means that If there is a component which have no need to re-execute will make our app slower. So this means by preventing such unnecessary re-executions and callbacks we can make our react app highly optimized. For such purpose we have React.memo hook
+
+

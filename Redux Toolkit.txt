@@ -1,0 +1,141 @@
+>npm install @reduxjs/toolkit
+
+--------------------Redux Toolkit
+
+while working with react there is a possibility where you can make a typo mistake while dispatching the actions.
+
+Its not compulsory to use Redux tool kit but if you using this will make things little bit easier for you.
+
+--------------------Below is the basic redux toolkit sample
+// In index.js (where we create our redux toolkit)
+
+import { createSlice, configureStore } from "@reduxjs/toolkit";
+const initialState = { counter: 0, showCounter: true };
+
+const counterSlice = createSlice({
+  name: "counter",
+  initialState: initialState,
+  reducers: {
+    increment(state){
+      state.counter++;
+    },
+    decrement(state){
+      state.counter--;
+    },
+    increase(state, action){
+      state.counter = state.counter + action.payload
+    },
+    decrease(state, action){
+      state.counter = state.counter - action.payload
+    },
+    toggleCounter(state){
+      state.showCounter = !state.showCounter
+    }
+  }
+
+});
+
+const store =configureStore({
+  reducer: counterSlice.reducer   //here we are using reducer instead of reducers cause it will map each object automatically
+})
+
+export const counterActions = counterSlice.actions
+export default store;
+
+
+-------Explanation
+Here we will use createSlice instead of createStore. The createSlice take 3 arguments one is the name which you can set anything and other is the initail state and third is the reducers object which will contain our functions/actions which we want to perform.
+
+The name of the functions you can create anything cause redux will automatically creates //{type: "UNIQUE_IDENTIFIER", payload: anyValue} and matches automatically. These functions take two arguments one is state and other is action for payloads.
+
+here we are using state.counter++; WHYYY??? in normal redux we strictly avoided this mutation of state. DONT WORRY here it is not the case. Redux toolkit will automatically replace this mutation with over writing. 
+
+here store is configured by using configueStore which takes an object. with key reducer and value of counterSlice.reducer. Here reducer 
+
+then we are exporting the actions (our functions) so that we could use them in other files.
+
+
+
+//In Counter file where we are using it
+import { useSelector, useDispatch } from "react-redux";
+import { counterActions } from "../store/index";
+import classes from "./Counter.module.css";
+
+const Counter = () => {
+  const dispatch = useDispatch();
+  const counter = useSelector((state) => state.counter); //useSelector is getting data from state obj which is in store
+  const show = useSelector((state) => state.showCounter); //useSelector is getting data from state obj which is in store
+
+  const toggleCounterHandler = () => {
+    dispatch(counterActions.toggleCounter());
+  };
+
+  const incrementHandler = () => {
+    dispatch(counterActions.increment());
+  };
+  const decreaseHandler = () => {
+    dispatch(counterActions.decrease(5));
+  };
+  const increaseHandler = () => {
+    dispatch(counterActions.increase(5)); //{type: "UNIQUE_IDENTIFIER", payload: 10}
+  };
+  const decrementHandler = () => {
+    dispatch(counterActions.decrement());
+  };
+
+  return (
+    <main className={classes.counter}>
+      <h1>Redux Counter</h1>
+      {show && <div className={classes.value}>{counter}</div>}
+      <div>
+        <button onClick={incrementHandler}>Increment</button>
+        <button onClick={increaseHandler}>Increase by 5</button>
+        <button onClick={decreaseHandler}>Decrease by 5</button>
+        <button onClick={decrementHandler}>Decrement</button>
+      </div>
+      <button onClick={toggleCounterHandler}>Toggle Counter</button>
+    </main>
+  );
+};
+
+export default Counter;
+
+
+----Exlanation
+
+As usual we will use dispatch and useSelector to perform actions and get data respectively.
+Now we will import counterAction object which contains our functions.
+
+now we will use these functions in our event handler functions as methods on objects
+
+for functions which require payloads simply pass the values payload to the functions as arguments.
+
+------------------------------Important Point
+here we should think about that when should we use redux. This will you know by experience. There is no need to always use redux. 
+
+
+---------------Advance Redux
+
+Your Redux function must be pure, side effects free, and synchronous function.
+
+------------------------Redux with async code. 
+
+Since the reducer function must be side effects free. So while using http request or using async code where should we place this code then? Cause they may casue side effect to the reducer function. Such code must NOT goes into reducer function
+
+WE have two choices
+Either put such code in component.
+Or put such code in selector generators.
+
+
+So the best way is to keep your side effect logic in component using useEffect and data transformation login inside the reducer function when working with redux.
+
+You must take into account that that useEffect will run for the first time when the file is executed for the first time. So in order to prevent this you must have to use useState by using true and false technique where you will run  execute your function when the condition is true.
+
+
+----------------------Thunk function
+
+Thunk is function which delays an action until later.
+It is an action creator function that does not return the action itself but another function which eventually returns the action
+
+
+

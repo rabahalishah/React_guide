@@ -1,0 +1,32 @@
+Most of the web is all about forms getting the data from the user and giving feedback accordingly. handling form can be a complex task when it comes to best user experience.
+This include checking form validation whether the input is valid of not etc.
+
+
+---------------Issues to deal and their solution
+When ever a form is submit by clicking on press button the browser will automatically send the http request to the browser this will reload the page automatically and will restart the react application and we will loose our state. To prevent this always use
+event.preventDefault() in submitHandler function
+
+---------------Preventing Submitting empty form
+To prevent submit empty form you must stops the execution of form submission handler function. You can do this by initializing states as true and false. check
+if the input is false its stops the execution then appear an error otherwise go with the flow.
+
+if enteredName === '' {
+setState(false)}
+
+NOTE: while setting states as true and false always set the initial state false because initially the form is empty and emtpy form is an invalid state
+To give user a feedback about invalid input you can use old school CSS class.
+first make a class of invalid input in css and then update the class conditionally and dynamically.
+ALso make a state namely [touchedInput, setTouchedInput] for such purpose.
+
+-------------------Adding custom hook
+
+Since the input form validation procedure will remain same for all other inputs so its a good idea to make a custom hook and call it in every components where it is needed. 
+but make sure that your hook remain generic
+
+There is link below which contains the code of a custom hook which is capabale of form validation. This hook will do all for us we just have to integrate this.
+
+link: https://github.com/academind/react-complete-guide-code/tree/16-working-with-forms/code/12-finished/src
+
+---------------------------------
+
+

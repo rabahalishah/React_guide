@@ -1,0 +1,56 @@
+Custom hooks are functions that contains stateful logic.
+With the help of custom hooks we can outsource stateful logic into re-usable functions.
+
+Its simple to create a react hook. Simply create it like you create components and then call in the file where you wanna use it.
+
+If you hook contains a state then everytime calling hook in other file will create separate state. It will not share the state.
+
+React custom hook also returns an array of hook like useState hook
+You can return what you want to return in your custom hooks. It could be anything, an array, an obj, a number etc.
+
+For example:
+// custom react hook file
+
+import React from 'react';
+
+const useCustomHook => (skinColor) {
+
+>all logic
+
+	return [name, age];
+}
+
+//In file where I want to use custom Hook
+
+import React from 'react';
+
+const App => () {
+
+	const [name, age] = useCustomHook(Blue)
+return 
+ > your code
+
+}
+
+
+
+here name and age is the array which our custom hook returns and blue is argument which our custom hook take.
+custom hooks can take any thing like arrays, obj and functions and custom hooks can also return any thing like arrays, obj, and functions etc.
+-------------------JSON.stringify();
+The JSON.stringify() static method converts a JavaScript value to a JSON string
+
+
+-----------------Infinite loop in custom hook
+When we use custom hook which contains states and then if we use useEffect hook inside that custom hook then an infinite loop willl be generated. As the variables in the dependencies array will 
+re-evaluated again again. And we know that in JS functions are objects and when ever the function is called even the same function is called again and again its a brand new object in memory.
+
+to prevent this situation we have to wrap our customhook function in useCallback hook.
+
+
+
+---------------Bind() method
+
+This method can be apply to any function which is used to pre-configure the function. it takes two arugments 1st argument is the this keyword in the function on which we are applying this method and second method I will let you know after reading the documentation
+
+
+---------------------

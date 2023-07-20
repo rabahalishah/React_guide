@@ -1,0 +1,71 @@
+----------------------
+we write JS in imparative approach (step by step)
+but in react we write code in declarative way
+Always start your component function with Captipal letter
+
+_________________Wrapper component in react
+
+import "./Card.css";
+function Card(props){
+  const classes = 'card ' + props.className
+  return (
+    <div className={classes}>{props.children}</div>
+  )
+}
+export default Card;
+
+NOTE: here props.children will be the content which is inbetween <Card></Card>
+
+
+------------------------------Setting state dependent on the previous state in react------
+
+The last - yet most important - step is to update the counter state in the best possible way. When updating some state based on its previous value, you should use pass a function to the state updating function (i.e., to setCounter(), in this example). This function automatically receives the previous value and should return the new value:
+export default function App() {
+    const [initialState, incrementedState]=React.useState(0);
+    const incrementer = () => {
+        incrementedState(prevState => prevState + 1)
+
+
+--------------------2 way binding is used in form submission to reset the entered value once the form is submitted----
+add value={entredValue} in  you input tags 
+and setEnteredValue('') in the onSubmitHandler
+
+
+----------Passing data from down to up (children to parent) in React
+while passing data from up to down we use props
+on the other hand while passing data from down to up we use pointers (pointer are also props but their name include on in the start)
+ON connvention shows that the value of this prop is actually a function which will triggered when something will happing inside that component.
+In short we will pass functions as value to the children elements and children will access them using props of components and those functions will contain data which we wanna pass to the parent element.
+
+Summar: we create functions in parent elements then we pass these functions as values to the children element so that they could receive data from children element. since the function were originally created in the parent elements. The data will be pass to the parent element in this way.
+
+Apni Zuban mai: Children Element parent element se puchta hai k tujhe data chahiye hai ya nahi? Parent kehta hai chahiye. Children kehta hai phir ek function bana aur mujhe pass ker mai us mai data daal ker tujhe bhejta hun as an argument Tu wahan se receive ker li.
+
+---------------Types of components
+1.Presentational, Stateless or dumb components: These are the components which do not manage any state they are just here for GUI
+2.Smart or Stateful component: These components manages the state of the event
+3. Controlled component: These components contains the main logic and control the other components
+
+------------------Map function is used in rendering
+map function transfroms and array or object into other kind of array or obj respectively by taking function as an argument.
+map() takes a function that automatically receives the individual array item as an argument and returns the new value (to which the item should be transformed)
+if you want to show or render some data from the array or list you must consider map function as it goes through each value and then apply a given function on it.
+
+
+-------------------For conditional rendering
+you must use useState and SetState in terms of true and false after that assume a variable which should define the initial state of rendering after that use if else condition and assign a new value to the assumed variable and this conditional approach is called ternary expression
+
+----------------------&& operator
+
+syntax:
+{condition && value }
+
+on becoming the condition true the value will be satisfied
+
+---------------Local Storage
+Local storrage is a browsers built in storage used for storing data in the form of objects.
+you can add objects as:
+localStorage.setItem('isLoggedIn', '1')
+
+and you can get data as:
+localStorage.getItem('isLoggedIn')

@@ -1,0 +1,81 @@
+Browser side app do not directly talk to the databases. Unless its a highly insecrue app. Cause By doing this you will loose your cedentials as important point to remember is that all files
+including your JS can be access by the user. 
+For talking to databases you always use backend. Such as Node.js PHP etc. You need to do routing React app will communicate with the backend via API
+
+EXTRA INFO: If in your app you are using local storage for authentication then dont simply use it. use it with 'bycrypt' of 'secure local storage package' so that if the data is visible on
+local storage then it must be visible in the form of hash code instead of actual value.
+For talking to databases you always use backend. Such as Node.js PHP etc. You need to do routing React app will communicate with the backend via API
+
+Here API is a very broad term simply means set of rules are clearly defined for an interface.
+When we talk about http requests REST and GraphQL are some standards of API.
+
+--------------------
+axios API are used for dealing with responses and sending http requests, this api makes this dealing very simple. You can use it with any library.
+There is another built in API called fetch API this is also used for dealing with responses
+
+------------------fetch API
+
+  //by default the method is GET
+
+Dont forget fetch() is an asynchronous function. Means the result wont be there instantly it would be there somewhere in future.
+fetch returns a promise so we have to handle that promise
+Here response is a JSON obj not JS obj so we have to convert it too. you can do it by using json method on response obj. json() method also return a response we have to handle that too.
+by using .then method again OR using await
+
+you always have to do some following steps
+ async function fetchMoviesHandler() {
+    const response = await fetch("https://swapi.dev/api/films/");
+    const data = await response.json();
+    const transformedMovies = data.results.map((movieData) => {
+      return {
+        id: movieData.episode_id,
+        title: movieData.title,
+        openingText: movieData.opening_crawl,
+        releaseDate: movieData.release_date,
+      };
+    });
+    console.log(transformedMovies)
+
+---------------Status
+200 
+404 etc.
+Whenever you get any status back in the action of sending http request this means the request was successful.
+If the status is other than OK then this means that the request was successful but there was an error.
+
+---------------handling errors
+
+always remember when we use .then() then we use .catch() to handle errors but in case of 
+async await we use "try and except"
+
+
+------------------Cleaning functions
+
+we use return console.log( ) to stops the exeution of the function once the task is completed
+
+-------------------Sending data POST method
+fetch  method is use for both sending and receiving data
+This is how you send data to the backend API.
+React do not talk directly to the database but with backend API
+
+async function addMovieHandler(movie) {
+    const response = await fetch(
+      "https://react-db9-default-rtdb.firebaseio.com/movies.json",
+      {
+        method: "POST",
+        body: JSON.stringify(movie),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    console.log(data);
+  }
+
+
+
+-------------JSON.stringify(anyArray/Obj)
+This take method takes JS array and converts it into JSON object.
+
+
+

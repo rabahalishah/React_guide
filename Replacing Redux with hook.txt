@@ -1,0 +1,11 @@
+There is no problem in using react redux but in case you want to update and manage your state but you dont want to use props and redux then there are two alternatives you can use to update and manage your state
+That is react context API hook (not recommended)
+To see how this work kindly go throught the advance event handling file
+Link: https://drive.google.com/drive/folders/1LKQhfYI-ezPbZssjT_jL4oNDka5V3EAr
+
+
+Why this context hook is not recommended. The reason is that this hook is not made for high frequency updates. Its basically for low frequency updates.
+
+The other method is using custom hooks.
+
+Again there is nothing wrong in using Redux. You can use it. It will do all heavy lifting for you.
