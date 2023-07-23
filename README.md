@@ -2128,3 +2128,340 @@ https://github.com/sghall/react-move
 **IMPORTANT**
 
 Despite having such packages you should focus on CSS transitions 
+
+
+# 16 Replacing Redux with React Hook
+There is nothing wrong in using redux you can go with that
+but what If you want to make an app without props and redux?
+Then you can manage your state with react hooks.
+
+There is no problem in using react redux but in case you want to update and manage your state but you dont want to use props and redux then there are two alternatives you can use to update and manage your state
+That is react context API hook (not recommended)
+To see how this work kindly go throught the advance event handling file
+Link: https://drive.google.com/drive/folders/1LKQhfYI-ezPbZssjT_jL4oNDka5V3EAr
+
+
+Why this context hook is not recommended. The reason is that this hook is not made for high frequency updates. Its basically for low frequency updates.
+
+The other method is using custom hooks.
+
+Again there is nothing wrong in using Redux. You can use it. It will do all heavy lifting for you.
+
+# 17 Testing React App
+
+This section is about automated testing.
+
+
+### What is testing?
+Till this stage we have done manual testing. Like debugging our code manually and previewing our application in browser and again test there manually.
+
+But in case of automated testing all the code will be tested automatically no matters where you make changes in the code.
+
+### Different types of tests
+- Unite Tests (Testing the individual building blocks such as functions, code blocks or components)
+- Integration Tests (Here we test the combination of multiple building blocks. Like one component is dependent on other component. Its not very common test. )
+- End-to-End (e2e) Tests (This is the testing of entire scenario like the complete authentication system)
+
+
+### Tool
+- for runnig the test we use JEST  (JEST is not specific to react it is a general JS library)
+- for rending our react app we use React Testing Library.
+- there is anotoher library called React-hook testing library you can use them too.
+
+Luckily both tools are already set up and when you install react app. There is no need to externally install them.
+
+### JEST
+To use testing we use: 
+import '@testing-library/jest-dom';
+
+The convention is that you must have to name you test file as you component file just add test name at the end.
+
+### Pre-reqs
+
+First create a test setup file namely setupTest.js in the src folder
+```bash
+//In setupTest.js
+import '@testing-library/jest-dom';
+```
+
+
+Now create another file The convention is that you must have to name you test file as you component file just add test name at the end.
+for example for testing App.js you have to create App.test.js
+```bash
+//now in App.test.js
+
+import '@testing-library/jest-dom'
+import { render, screen } from "@testing-library/react";
+import App from "./App";
+
+test("renders learn react link", () => {
+  render(<App />);
+  const linkElement = screen.getByText(/Learn React/i);
+  expect(linkElement).toBeInTheDocument();
+});
+
+// and here if there is a component "Learn React" 
+```
+The test will run the component. Luckily its not case sensitive.
+
+IMPORTANT: for the safe side you can install "npm i @testing-library/jest-dom"
+
+
+Now to run test simple type:
+```bash
+> npm test
+```
+### Writing Custom test
+To Wirte a custom test you have to follow some rules like 3 A's rule
+
+1. Arrange (Setting test data, conditions and environment)
+2. Act (Run logic that should be tested e.g. execute function)
+3. Assert (Compare execution results with expected results)
+```bash
+//In Greeting.js file
+
+import React from "react";
+
+export default function Greeting() {
+  return (
+    <div>
+      <h2>Hello World</h2>
+      <p>
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Adipisci porro
+        illum, est ut quam possimus iure iusto corrupti praesentium minima sit
+        suscipit, aliquid vel. Animi minima error distinctio amet labore.
+      </p>
+    </div>
+  );
+}
+
+
+```
+```bash
+// In Greeting.Test.js file
+
+
+import Greeting from "./Greeting";
+import { render, screen } from "@testing-library/react";
+
+test('Render Hellos world as text', ()=>{
+    // Arrange
+    render(<Greeting/>);
+
+    //Act 
+    // (But here act is nothing)
+
+    //Assert
+    const helloWorldElement = screen.getByText('Hello World', {exact: false});
+    expect(helloWorldElement).toBeInTheDocument();
+}); 
+```
+
+here test is the built in function which will be run on running the test. It takes two argument one is the name or sentence about test and a callback function.
+//here screen is like virtual DOM 
+//here exact: false will give us leniency in matching the text.
+//where as if exact: true will match exactly event the full stop :)
+### Wiritng test for greeting file
+
+**Extra info**
+```bash
+here .get() method shows error on finding the value
+.query() this do not throw any errors
+.find() this method returns a promise.
+```
+
+
+### how to group mulitple test
+for grouping test you have to make suits using describe function
+```bash
+import Greeting from "./Greeting";
+import { render, screen } from "@testing-library/react";
+
+describe("Greeitng component", () => {
+  test("Render Hellos world as text", () => {
+    // Arrange
+    render(<Greeting />);
+
+    //Act
+    // (But here act is nothing)
+
+    //Assert
+    const helloWorldElement = screen.getByText("Hello World", { exact: false });
+    expect(helloWorldElement).toBeInTheDocument();
+  });
+test('your logic');
+test('your logic');
+test('your logic');
+});
+
+```
+
+here you can run multiple tests inside describe function.
+
+
+
+### Test for states
+```bash
+//In Greeting.js Component
+
+import React from "react";
+import { useState } from "react";
+export default function Greeting() {
+  const [changeText, setChangeText] = useState(false);
+  const changeTextHandler = () => {
+    setChangeText(true);
+  };
+  return (
+    <div>
+      <h2>Hello World</h2>
+      {!changeText && <p>Its good to see you.</p>}
+      {changeText && <p>Changed!</p>}
+      <button onClick={changeTextHandler}>Change</button>
+    </div>
+  );
+}
+```
+```bash
+// In Greeting.test.js
+
+import Greeting from "./Greeting";
+import userEvent from "@testing-library/user-event";
+import { render, screen } from "@testing-library/react";
+
+describe("Greeitng component", () => {
+  test("Render Hellos world as text", () => {
+    // Arrange
+    render(<Greeting />);
+
+    //Act
+    // (But here act is nothing)
+
+    //Assert
+    const helloWorldElement = screen.getByText("Hello World", { exact: false });
+    expect(helloWorldElement).toBeInTheDocument();
+});
+test('Renders good to see you if the button was NOT clicked', ()=> {
+    //Arrange
+    render(<Greeting/>);
+    //Act
+    // (But here act is nothing)
+    
+    //Assert
+    const outputElement = screen.getByText("Its good to see you", { exact: false });
+    expect(outputElement).toBeInTheDocument();
+
+  });
+test('Renders Changed! if the button was click', ()=> {
+    //Arrange
+    render(<Greeting/>);
+    //Act
+    const buttonElement = screen.getByRole('button');
+    userEvent.click(buttonElement)  
+    
+    //Assert
+    const outputElement = screen.getByText("Changed!", { exact: false });
+    expect(outputElement).toBeInTheDocument() ;
+
+  });
+});
+```
+
+//here screen is like virtual DOM
+//here exact: false will give us leniency in matching the text.
+//where as if exact: true will match exactly event the full stop :)
+
+
+//Here screen is DOM and here its not an HTML or windows DOM its a DOM of React component on which are running our test. This is like so that we can access our React component element and write rest for them
+
+
+
+### Precautions
+while working test with async code in which we are sending request to the servers to fetch the data. Its not be done. Like while testing we should NOT send request to server. Or we should send request to a fake test server.
+Always remember. You have to run test on functions which are written by you. Like you dont have to run tests for built in functions like fetch() cause we trust the react developer and testing a function simply means whether it is working as expected or not. SO for built in functions we believe that they are already tested from the React Developers and there is no need to test them. We are only responsible for the functions which we have written by ourselves
+
+But how can we replace fetch with a dummy function?
+```bash
+fetch('url').then(response => response.json()).then(data => console.log(data));
+```
+//simply to make the above function a mock or dummy function replace it by below:
+```bash
+window.fetch = jest.fn();
+window.fetch.MockResolvedValueOnce({json: async()=> [{id: 'p1', title:'First post'}]})
+```
+in this way we are not sending any request to the real server instead we are using our mock function and its behaviour is controlled. 
+By mocking the fetch function, you can control its behavior and simulate responses without actually making network requests. This is particularly useful during testing, as it allows you to isolate and test specific parts of your code without relying on external APIs or making actual network calls.
+# 18 Preventing Unnecessary execution 
+### React.memo()
+memo from memory 
+This function prevent the unnecessary re-execution of the react component. This hook compares the value of props with the previous props it will allow the re-execution only when there is a change in the value of props. If the value is not change then the re-execution for this component will be skipped. In this way we can optimize our React App
+
+
+**IMPORTANT:** If its is so, then we dont use React.memo on all components? 
+The Answer is that this React.memo comes with a cost like React must have to store it the previous value and then compare it with the new value. In this way the React have to do two things one storing the value and second one is to comparison. This will also effect the performance of React App.
+
+But one more important thing to remember is that a regular function calling multiple time will be treated as the new value. As we know that functions are objects and two object/arrays will have the same value will not be equal. 
+For exp: 
+```bash
+[1,2,3]===[1,2,3] //flase and f()=== f()  //false
+```
+So this means that React.memo()  is useless for objects? cause it is unable to compare the objects despite having the fact that objects are same?
+Answer is NO. To make memo useful we use an extra hook called.  useCallback()
+
+### useCallback() 
+This hook allows us to save functions so that they could not be re-created and will have the same address in memory so that the comparison operator could work correctly.
+```bash
+import {useCallback} from 'React';
+
+useCallback(function, dependencies)
+```
+
+this hook takes a fucntion as a first argument which we want to save and its dependencies as the second argument.
+
+So we can use useCallback() hook on such functions about which we are sure that this function will not be changed
+
+its dependencies are same as useEffect function. 
+
+You can raise a question that on one side we say that 	we can use useCallback() hook on such functions about which we are sure that this function will not be changed and on the other hand we ask for dependencies. WHHHYYYY???? dependencies are needed only when you are sure that this thing will change in future. But why are we using dependencies with useCallback() argument function about which we are sure that not gonna change.
+
+The answer is closure. The functions are closures in javaScript. Means that the variables inside this functions are coming from outside of the function may change. And function remember that value and on calling the same function again the value will be updated. Therefore we have to tell the useCallback() that dont re-create this function at any circumstances BUT re-create it only when the variable given in the depencies will change......In short we add variables in dependencies in useCallback() function to create come exceptions fro re-creating the functions.
+
+
+**IMPORTANT:** Since the component is re-evaluted doesn't it mean that we are re-initializing our state again and again?
+Answer is NO. Since we know that react is responsible for managing our state and components. This management process will not consider the useState() while re-evaluating casue useState is coming from react and it make sure that the useState() will not re-initialize.
+
+
+### React Schedule and Batch execution
+
+Whenever we make changes in our app. React do not change it instantly but it postponed the state change or may be schedule tha state. React also have priority precedence. Like it will highly prioritize the input getting from user and so on.
+
+**IMPORTANT:**
+Since we have discussed that React schedule the state updates so there is a possibility that more than one state is managed at the same time. Therefore, we use callback function inside setState function where one state is dependant on the previous state so that more than one event don not schedule at the same time.
+
+In short React do not instantly update the state it schedule the state management.
+This is the reason we do not get the latest state earlier. We get that state when the component will re-render/Re-evaluated.
+
+
+
+Other case: if there is a case like in which a regular function we are running two setState functions line by line then React will execute both of them in Batch.
+
+
+
+### useMemo() Hook
+This hook is same as useCallback() hook but the difference is that useMemo() memoize the data whereas useCallback memoize the function. 
+useCallback is more usefull than useMemo. 
+In short : useCallback returns a memoized callback function, while useMemo returns a memoized value.
+```bash
+import {useMemo} from 'React';
+
+useMemo(function, dependencies)
+```
+
+
+**For Example:** there is an expression or loop which a function is return a value that may take some time in execution if the loop is large. So if that expression is not changing then why is there any need to re-evaluate that or call that function again and again on every execution. This may lead to compromise on performance. So in order to store the value of that calculation or loop we use useMemo() Hook so that in case of not changing in its value it skip its re-evalution.
+
+# 19 Rules of Hooks
+- Only call Hooks in React Component Functions. You cannot call hook functions outside the component function.
+- Dont call them in nested function. or in block code.
+- Specifil unofficail rule for useEffect():
+- Always add every thing in you dependencies that you have refered in the useEffect callback function.
+
