@@ -1,3 +1,0 @@
-There is nothing wrong in using redux you can go with that
-but what If you want to make an app without props and redux?
-Then you can manage your state with react hooks
