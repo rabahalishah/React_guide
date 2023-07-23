@@ -1907,4 +1907,224 @@ if (!userloggedIn) {
 
 here replace attribute is very important cause once a user logged out and if he clicked on the go back button on browser it will again be logged in to the account as the account preserve the histroy so to prevent this behaviour we use replace={true	}
 
-# 14
+# 14 Authentication with React
+
+### Query Parameter
+
+query parameter is a parameter which appends in the URL aftter a question mark.
+
+You can do authentication with the help of useState Hook but there is a web standard in which we do authentication uisng query parameter logic due to which this work easy to redirect to the authentication pages.
+
+### useSearchParams
+Query params are officially called search params
+This hook actually returns an array
+```bash
+const [searchParams, setSearchParams] = useSearchParams();
+const siLogin = searchParams.get('mode')
+
+ <div className={classes.actions}>
+          <Link to={`?mode=${isLogin ? 'signup' : 'login'}`} >
+            {isLogin ? "Create new user" : "Login"}
+          </Link>
+```
+
+- here mode is a keyword we used after ? we can set it to anyanem
+- searchParams is an object of current query parameter
+- here setSearchParams is a function to update searchParams
+
+
+
+
+### Extra Info
+
+```bash
+fetch('https://localhost:8080/', {
+    method : 'POST',
+    header: {
+      'Content-Type': 'application/json'
+    },
+    body:JSON.stringify(authData)
+  })
+```
+
+These are some essentials must be set for post method
+
+### Standard way of throwing errors
+```bash
+import {json} from 'react-router-dom'
+if (!response.ok) {
+    return json({message : 'Could not authenticate user'}, {status: 500})
+
+  }
+```
+ٍٍٍٍٍبٍٍ
+**Important**
+
+***Important:** If doesn't return a value under certain circumstances.
+then You should make sure that you do add an extra return null statement in all if statement branches where nothing would be returned otherwise to avoid errors.
+
+# 15 React Animations
+### Transition using CSS
+We can hide or show our block using CSS
+This can be simply done by creating two css classes one for showing and other for hiding
+
+```bash
+.myElement {
+transition: all 0.3s ease-out;
+
+}
+.open{
+opacity: 1;
+transfrom : translateY(0);
+}
+
+.close
+opacity: 0;
+transfrom : translateY(-100%);
+
+}
+```
+
+
+### Animation
+you can apply animation using this syntax:
+```bash
+.myElement {
+transition: all 0.3s ease-out;
+
+}
+.open{
+animation: openModal 0.4s ease-out forwards;
+}
+
+.close
+opacity: 0;
+transfrom : translateY(-100%);
+
+}
+@keyframes openModal {
+
+0% {
+opacity: 0;
+transfrom : translateY(-100%);
+}
+
+50% {
+opacity: 1;
+transfrom : translateY(20%);
+}
+
+100% {
+opacity: 1;
+transfrom : translateY(0);
+}
+}
+```
+
+### Limitations of css transition
+The limitation is that  by using css transition....In case we hide our modal our modal do not get removed or hide from the DOM.
+Its stays there but only thing changes its opacity. 
+
+
+To solve this issue we can use ternary operation and render or remove element from DOM
+but doing it so will wont have transitions and animations for out going. This can be solved by using some extra tools.
+
+The tool is react transition group its a github repo you can use it.
+https://github.com/reactjs/react-transition-group
+
+```bash
+import { Transition } from 'react-transition-group';
+```
+
+The main adv of this package is that this also manages the state.
+on any state change it also provide an intermediate state so that we could perform our css transitions on them.
+For example:
+entering then entered
+exiting then exited
+
+
+after how much time it will entered or exited depends upon the time given in timeout.
+
+**Example:**
+```bash
+ <Transition 
+          in={this.state.showBlock} 
+          timeout={1000}
+          mountOnEnter
+          unmountOnExit>
+          {state => (
+            <div
+              style={{
+                backgroundColor: "red",
+                width: 100,
+                height: 100,
+                margin: "auto",
+                transition: 'opacity 1s ease-out',
+                opacity: state === 'exiting' ? 0 : 1
+              }}
+            />
+
+// on exiting the transition will be shown
+```
+
+Here Transition tag comes with state which contains entering, entered, exititing, exited props
+
+
+**Note:** always remember this time duration will be in mili seconds.
+
+
+### Always remeber  CSS is add to React JS in the form of objects
+
+```bash
+style={{backgroundColor: 'red', width: 1}}
+```
+
+### Transition Methods	
+These are the functions which will run on enter, entering etc.
+```bash
+<Transition 
+          in={this.state.showBlock} 
+          timeout={1000}
+          mountOnEnter
+          unmountOnExit
+          onEnter={()=>console.log('Enter')}
+          onEntering={()=>console.log('Entering')}
+          onEntered={()=>console.log('Entered')}
+          onExit={()=>console.log('Exit')}
+          onExiting={()=>console.log('Exiting')}
+          onExited={()=>console.log('Exited')}
+          >
+```
+
+
+### Template Transitions
+```bash
+import { CSSTransition } from 'react-transition-group';
+```
+
+https://reactcommunity.org/react-transition-group/css-transition
+
+
+### Transition Group
+
+you can use it where you are outputing list
+```bash
+import {
+  CSSTransition,
+  TransitionGroup,
+} from 'react-transition-group';
+```
+
+
+### Alternative package for animations
+React Motion
+https://github.com/chenglou/react-motion
+
+
+React Move
+https://github.com/sghall/react-move
+
+
+**IMPORTANT**
+
+Despite having such packages you should focus on CSS transitions 
