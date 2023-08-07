@@ -876,9 +876,12 @@ link: https://github.com/academind/react-complete-guide-code/tree/16-working-wit
 ```bash
 > npm install redux react-redux
 ```
-
+If you want a centralized place to handle all of your states and any requests that will change that state. This is where Redux comes in. Redux is a state management library that allows us to create a store that holds all of our state. We can then dispatch actions to change that state.
 Prop drilling: it occurs when a parent component passes data down to its children and then those children pass the same data down to their own children. At the end, it's a long chain of component dependencies that can be difficult to manage and maintain.
 
+Redux consist of a reducer function that takes in the current state and an action and returns the new state. We can have multiple reducers that handle different parts of our state. 
+**For example:** we could have a reducer that handles the user state and another reducer that handles the product state.
+A **store** is a place to hold all of our state. We can then dispatch actions to change that state. We can also subscribe to the store to get the current state.
 Redux is a JS library for statem management. Its also called flux like state propagation library
 
 There are three type of states
