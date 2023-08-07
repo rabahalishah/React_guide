@@ -14,7 +14,7 @@ React determines how the component tree are currently looking and how they  shou
 It is **important** to note that whenever the state, context or props changes inside the component. React Re-evaluated/re-execute that component. Moreover, Re-evaluation doesn't mean Re-Rendering  the Real DOM. NO NOT at all.
 Real DOM changes only when there is a difference between the tree of the previous state and current state. This makes React Fast.
 
-***Example**
+**Example**
 ```bash
 //previous state
 
