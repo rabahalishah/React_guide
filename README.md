@@ -826,6 +826,33 @@ return
 
 here name and age is the array which our custom hook returns and blue is argument which our custom hook take.
 custom hooks can take any thing like arrays, obj and functions and custom hooks can also return any thing like arrays, obj, and functions etc.
+
+#### Mature Example of custom hook
+```bash
+// File where we are creating out custom hook
+import React, {useState} from 'react';
+
+function useLocalStorage(key, initialValue) {
+  const [value, setValue] = useState(() => {
+    return getStoredValue(key, initialValue);
+// Here getStoredValue simply get the values from local storage if exists otherwise it returns the initial value.
+  });
+  useEffect(() => {
+    secureLocalStorage.setItem(key, value);
+  }, [value]);
+
+  return [value, setValue];
+}
+
+export default useLocalStorage;
+
+
+// File where we are using our custom hook
+import {useLocalStorage} from './folder'
+const [value, setValue] = useLocalStorage('myKey', 'myInitialValue') 
+```
+
+
 ### JSON.stringify();
 The JSON.stringify() static method converts a JavaScript value to a JSON string
 
