@@ -531,78 +531,106 @@ There is also a property other than "type" which we used to pass to reducer acti
 
 - You can first go with useState and then make it to reducer hook
 
-### React Context
+### React useContext Hook
 This hook allows us to pass and update data deeply in the tree (our app components tree).
 This is very helpful like if you want to send some props to a component which is in another component then you dont need to go through complex way
 **Method 1**
 You simply have to createContext() This function will contain you data in the form of object which you want to pass. Simply wrap the parent component with thir wrapper:
 ```bash
-// Creating context in auth-context file
-
-import { createContext, React } from 'react';
-
-const AuthContext = React.createContext({
-  isloggedIn: false
-}) 
-
-
-export default AuthContext;
 ```
 ```bash
 // In app.js
-
+import React, { createContext } from 'react';
+export const myContext = React.createContext();
+export default function App() {
 return (
-<AuthContext.provider value{{fruit: 'Apple' }}>
-	....your HTML/JSX
-</AuthContext.provider>
+<myContext.provider value={{fruit: 'Apple' }}>
+	<anyComponent/>
+</myContext.provider>
 )
+}
+
+// Here any component inside the wrapper of <myContext.provider> will have access to anything (we can pass any thing function, variable, obj) inside the value variable
 ```
 
-now all the content in this wrapper have access to  AuthContext function in auth-context.js file.
-in value you can provide as many values you want even you can pass functions via values
+now all the content in this wrapper have access to  variables in "value" you can provide as many varibales in the "value" you want even you can pass functions via values
 now to consume it you have to go the file where you want to consume this data:
+
+
+**Consuming the value of myContext**
+
+now to consume context we use a hook called useContext;
 ```bash
+import { useContext, myContext } from 'react';
+
+function myComponent() {
+  const fruitObject = useContext(myContext);
 return (
-<AuthContext.consumer>
-
-{(ctx)=>{ return (
-	....your HTML/JSX
-	console.log(ctx.fruit)  //apple
-)}}
-	
-</AuthContext.consumer>
+<>
+{fruitObject}
+</>
 )
-```
-Here we have wrapped it and created a function having ctx parameter and returning our content. Here ctx parameter will have take take the object that we created in AuthContext function.
-
-
-
-**Method 2 (recommended):**
-
-The second method is quite clean.
-
-All steps are same as above. Except the place where you want to consume your context.
-now to consume context you have to do:
-```bash
-import { useContext } from 'react';
-
-function componentFunction() {
-  const ctx = useContext(AuthContext);
-
-//useContext return the object/content which is available in authContext function
-
-you can use data from ctx as 
-
-console.log(ctx.isLoggedIn )
-
-
 ```
 
 **NOTE:** You can also pass functions in value keyword in your context component
 Use context hook when you have to perform a very specific value or action
 
+#### Best Practices to follow while using useContext
+You can with the above code but its a good practice to follow some standards so goes like:
+1. Create a separate file like a store which contains all your logic, states or variable which you want to use globally.
+2. Instead of using <myContext.provider value={anyThing}> in App.jsx make a wrapper with any name in your store file which you have created.
+3. Instead of direct import useContext hook in every file where you want to consume it. Create a custom hook and import that.
 
+Now following all above rules step by step
 
+#### Best Practices:
+```bash
+// contextStore.js
+import React, { createContext, useContext } from 'react';
+
+const myContext= React.creatContext();
+export function useMyCustomHook(){
+return useContext(myContext)
+}
+
+export function myProvider({children}) {
+return (
+<myContext.Provider value={{fruit:apple}}>
+    {children}
+</myContext.Provider>
+)
+}
+```
+Now all our values and logic is in Context store. Now instead of wrapping directing wrapping our components we will use our custom wrapper which is "myProvider" in this case. 
+Instead of using useContext direct we will use our custom hook which is 
+```bash
+// in app.js
+import {useMyCustomHook, myProvider} from 'react';
+import 'myComponent' from './filePath';
+
+export default function app(){
+<myProvider>
+    <myComponent/>
+</myProvider>
+}
+//
+```
+
+```bash
+//In myComponent.js where we want to use values from store.
+import {useMyCustomHook} from 'react';
+
+export default function myComponent(){
+const myFruitObj = useMyCustomHook();
+return (
+<>
+  {myFruitObj}
+</>
+
+)
+}
+
+```
 ### Limitations of React Context
 It is not suitable for high optimized changes.
 It should not be replace across all the components
