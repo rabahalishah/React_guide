@@ -2533,6 +2533,6 @@ export {default as Signup} from "./Signu
 
 ```bash
 //In App.js
-import {Login } from './components'
+import {Login, Signup } from './components'
 ```
 
