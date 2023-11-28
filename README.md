@@ -2523,3 +2523,16 @@ useMemo(function, dependencies)
 - Specifil unofficail rule for useEffect():
 - Always add every thing in you dependencies that you have refered in the useEffect callback function.
 
+# Exporter BEST PRACTICES
+Create an index.js let say we are in components folder (here index name is important)
+```bash
+//In index.js (in components folder)
+export {default as Login} from "./Login"        
+export {default as Signup} from "./Signu
+```
+
+```bash
+//In App.js
+import {Login } from './components'
+```
+
