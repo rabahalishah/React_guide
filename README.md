@@ -2536,3 +2536,40 @@ export {default as Signup} from "./Signu
 import {Login, Signup } from './components'
 ```
 
+# useRoutes() hook in React Router dom
+
+The useRoutes hook is the functional equivalent of <Routes>, but it uses JavaScript objects instead of <Route> elements to define your routes. These objects have the same properties as normal <Route> elements, but they don't require JSX.
+
+The return value of useRoutes is either a valid React element you can use to render the route tree, or null if nothing matched.
+
+```bash
+import * as React from "react";
+import { useRoutes } from "react-router-dom";
+
+function App() {
+  let element = useRoutes([
+    {
+      path: "/",
+      element: <Dashboard />,
+      children: [
+        {
+          path: "messages",
+          element: <DashboardMessages />,
+        },
+        { path: "tasks", element: <DashboardTasks /> },
+      ],
+    },
+    { path: "team", element: <AboutPage /> },
+  ]);
+
+  return element;
+
+}
+```
+### Easy way
+<img src="https://github.com/rabahalishah/React_guide/assets/117630286/ab9dee6a-eb8f-4498-892f-d6b6d8a0c1a7" width="300"/>
+
+
+### Protected Routes
+
+<img src="https://github.com/rabahalishah/React_guide/assets/117630286/e819d7d7-7554-4452-bed8-b85befd2f948" width="600"/>
